@@ -8,7 +8,7 @@ import {Suspense} from "react"
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={"Cargando"}>
+    <Suspense fallback={"Cargando Pagina..."}>
       <BrowserRouter>
         <App />
       </BrowserRouter>

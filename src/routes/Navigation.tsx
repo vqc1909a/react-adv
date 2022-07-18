@@ -1,38 +1,42 @@
+//!La posición del suspense va a depnder de donde quiere hacer la carga de la pagina de espera, si va a ocupar toda la pagina o solamente la parte donde se renderiza el componente, si es el segundo el supense tiene que ir en la propiedad Element de Route, si es el primero, el Suspense tiene que envolver el BrowserRouter as Router y devlver ahi si un componente que ocupe toda la pagina, esto depende de tu pagina, será uno de los dos si o si, es recomendable el uso dentro del route como una carga de solamente el componente
+
+// import { Suspense } from 'react';
+
 import {
   Routes,
   Route,
   NavLink,
   Navigate
 } from 'react-router-dom';
-import {LazyPage1, LazyPage2, LazyPage3} from "../01-lazyload/pages"
 import logo from '../logo.svg';
+import routes from './routes';
 
 export const Navigation = () => {
   return (
       <div className="main-layout">
         <nav>
-            <img src={ logo } alt="React Logo" />
+          <img src={ logo } alt="React Logo" />
           <ul>
-            <li>
-              <NavLink to="/lazy1" className={({isActive}) => isActive ? 'nav-active': ''}>Lazy1</NavLink>
-            </li>
-            <li>
-              <NavLink to="/lazy2" className={({isActive}) => isActive ? 'nav-active': ''}>Lazy2</NavLink>
-            </li>
-            <li>
-              <NavLink to="/lazy3" className={({isActive}) => isActive ? 'nav-active': ''}>Lazy3</NavLink>
-            </li>
+            {routes.map(({name, to}) => (
+              <li key={to}>
+                <NavLink to={`${to}`} className={({isActive}) => isActive ? 'nav-active': ''}>{name}</NavLink>
+              </li> 
+            ))}           
           </ul>
         </nav>
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Routes>
-          <Route path="lazy1" element={<LazyPage1 />} />                  
-          <Route path="lazy2" element={<LazyPage2 />} />  
-          <Route path="lazy3" element={<LazyPage3 />} />
+          {routes.map(({Component, path, to}) => (
+            // <Route key={to} path={`${path}`} element={ <Suspense fallback="Cargando...">
+            //   <Component />
+            // </Suspense> } />  
 
-          <Route path="*" element={<Navigate to="lazy1" replace></Navigate>}></Route> 
+            <Route key={to} path={`${path}`} element={<Component />} />  
+
+          ))}        
+          <Route path="*" element={<Navigate to={`${routes[0].to}`} replace></Navigate>}></Route> 
         </Routes>
       </div>
   );

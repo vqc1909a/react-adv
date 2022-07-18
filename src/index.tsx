@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
+import {Suspense} from "react"
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Suspense fallback={"Cargando"}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 );
